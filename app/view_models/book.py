@@ -15,6 +15,8 @@ class BookViewModel:
         self.image = data['image']
         self.isbn = data['isbn']
         self.pages = data['pages']
+        self.binding = data['binding']
+        self.pubdate = data['pubdate']
 
     # 用属性访问调用函数
     @property

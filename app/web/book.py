@@ -45,6 +45,9 @@ def search():
 
 @web.route('/book/<isbn>/detail')
 def book_detail(isbn):
+
+
+    # 取书籍详情数据
     yushu_book = YuShuBook()
     yushu_book.search_by_isbn(isbn)
     book = BookViewModel(yushu_book.first)

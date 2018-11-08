@@ -1,0 +1,24 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Title</title>
+    <link rel="stylesheet" href="{{ url_for('static',filename='test.css') }}">
+</head>
+<body>
+{#{% for key,value in data.items() %}#}
+{#    {{ key }}#}
+{#    {{ value }}#}
+{#{% endfor %}#}
+
+{% if data.age == 18 %}
+    {{ data | length() }}
+    {{ data.school | default('不存在') }}
+    {#    default当前面属性不存在时显示#}
+    {% set messages = get_flashed_messages() %}
+    {{ messages }}
+{% endif %}
+
+
+</body>
+</html>

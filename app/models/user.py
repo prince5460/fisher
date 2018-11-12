@@ -53,6 +53,8 @@ class User(UserMixin, Base):
             return False
         # 不允许一个用户同时赠送多本相同的书
         # 一个用户不同同时成为赠送者和索要者
+
+        # 既不在赠送清单也不在心愿清单才能添加
         gifting = Gift.query.filter_by(uid=self.id, isbn=isbn, launched=False).first()
         wishing = Wish.query.filter_by(uid=self.id, isbn=isbn, launched=False).first()
         if not gifting and not wishing:

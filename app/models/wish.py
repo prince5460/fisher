@@ -12,6 +12,7 @@ __author__ = 'zhou'
 
 
 class Wish(Base):
+    __table_args__ = {"useexisting": True}
     id = Column(Integer, primary_key=True)
     user = relationship('User')
     uid = Column(Integer, ForeignKey('user.id'))

@@ -32,7 +32,7 @@ def save_to_gifts(isbn):
         #     raise e
     else:
         flash('本书已添加至您的赠送清单或心愿清单，请不要重复添加')
-    return redirect(url_for('web.book_detail',isbn=isbn))
+    return redirect(url_for('web.book_detail', isbn=isbn))
 
 
 @web.route('/gifts/<gid>/redraw')

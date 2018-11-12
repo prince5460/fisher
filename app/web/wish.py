@@ -1,4 +1,4 @@
-from flask_login import current_user
+from flask_login import current_user, login_required
 from flask import redirect, url_for, flash
 
 from app.models.base import db
@@ -14,6 +14,7 @@ def my_wish():
 
 
 @web.route('/wish/book/<isbn>')
+@login_required
 def save_to_wish(isbn):
     if current_user.can_save_to_list(isbn):
         with db.auto_commit():

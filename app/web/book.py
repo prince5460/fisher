@@ -5,8 +5,12 @@ Created by ZhouSp on  2018/11/3.
 from flask import jsonify, request, render_template, flash
 import json
 
+from flask_login import current_user
+
 from app.forms.book import SearchForm
 from app.view_models.book import BookViewModel, BookCollection
+from models.gift import Gift
+from models.wish import Wish
 from . import web
 from app.libs.helper import is_isbn_or_key
 from app.spider.yushu_book import YuShuBook
@@ -43,12 +47,26 @@ def search():
     return render_template('search_result.html', books=books)
 
 
-@web.route('/book/<isbn>/detail')
+@web.route("/book/<isbn>/detail")
 def book_detail(isbn):
+    has_in_gifts = False
+    has_in_wishs = False
 
-
-    # 取书籍详情数据
+    # 取出每本书的详情
     yushu_book = YuShuBook()
     yushu_book.search_by_isbn(isbn)
     book = BookViewModel(yushu_book.first)
-    return render_template('book_detail.html', book=book, wishes=[], gifts=[])
+
+    # 三种情况的判断
+    if current_user.is_authenticated:
+        if Gift.query.filter_by(uid=current_user.id).first():
+            has_in_gifts = True
+        if Wish.query.filter_by(uid=current_user.id).first():
+            has_in_wishs = True
+
+    # 赠书人列表和索要人列表
+    trade_gifts = Gift.query.filter_by(isbn=isbn).all()
+    trade_wishs = Wish.query.filter_by(isbn=isbn).all()
+    return render_template("book_detail.html", book=book,
+                           wishes=trade_wishs, gifts=trade_gifts,
+                           has_in_wishs=has_in_wishs, has_in_gifts=has_in_gifts)

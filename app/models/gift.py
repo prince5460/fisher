@@ -11,6 +11,7 @@ __author__ = 'zhou'
 
 
 class Gift(Base):
+    __table_args__ = {"useexisting": True}
     id = Column(Integer, primary_key=True)
     user = relationship('User')
     uid = Column(Integer, ForeignKey('user.id'))
@@ -18,4 +19,3 @@ class Gift(Base):
     # book = relationship('Book')
     # bid = Column(Integer, ForeignKey('book.id'))
     launched = Column(Boolean, default=False)
-

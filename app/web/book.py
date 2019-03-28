@@ -9,8 +9,8 @@ from flask_login import current_user
 
 from app.forms.book import SearchForm
 from app.view_models.book import BookViewModel, BookCollection
-from models.gift import Gift
-from models.wish import Wish
+from app.models.gift import Gift
+from app.models.wish import Wish
 from . import web
 from app.libs.helper import is_isbn_or_key
 from app.spider.yushu_book import YuShuBook

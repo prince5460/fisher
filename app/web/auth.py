@@ -59,5 +59,5 @@ def change_password():
 @login_required
 def logout():
     logout_user()
-    flash('You have been logged out.')
+    flash('退出成功.')
     return redirect(url_for('web.index'))

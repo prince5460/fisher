@@ -2,10 +2,11 @@
 Created by ZhouSp 18-11-8.
 '''
 from flask import current_app
-from sqlalchemy import Column, Integer, String, Boolean, Float, ForeignKey, SmallInteger, desc
+from sqlalchemy import Column, Integer, String, Boolean, Float, ForeignKey, SmallInteger, desc, func
 from sqlalchemy.orm import relationship
 
 from app.models.base import db, Base
+from app.models.wish import Wish
 from app.spider.yushu_book import YuShuBook
 
 __author__ = 'zhou'
@@ -20,6 +21,22 @@ class Gift(Base):
     # book = relationship('Book')
     # bid = Column(Integer, ForeignKey('book.id'))
     launched = Column(Boolean, default=False)
+
+    @classmethod
+    def get_user_gifts(cls, uid):
+        gifts = Gift.query.filter_by(uid=uid, launched=False).order_by(
+            desc(Gift.create_time)).all()
+        return gifts
+
+    @classmethod
+    def get_wish_counts(cls, isbn_list):
+        count_list = db.session.query(func.count(Wish.id), Wish.isbn).filter(
+            Wish.launched == False,
+            Wish.isbn.in_(isbn_list),
+            Wish.status == 1).group_by(
+            Wish.isbn).all()
+        count_list = [{'count': w[0], 'isbn': w[1]} for w in count_list]
+        return count_list
 
     @property
     def book(self):

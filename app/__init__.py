@@ -5,15 +5,15 @@ Created by ZhouSp on  2018/11/3.
 from flask import Flask
 from flask_login import LoginManager
 
-from app.models.book import db
+from app.models.base import db
 
 login_manager = LoginManager()
 
 
 def create_app():
-    app = Flask(__name__)
+    app = Flask(__name__,)
     # 指定静态文件夹路径
-    # app = Flask(__name__,static_folder='xxx')
+    # app = Flask(__name__,static_folder='xxx',static_url_path='xxx')
     app.config.from_object('app.secure')
     app.config.from_object('app.setting')
 
@@ -29,7 +29,7 @@ def create_app():
     with app.app_context():
         db.create_all()
 
-    from app.web import web
+    # from app.web import web
     register_web_blueprint(app)
 
     return app

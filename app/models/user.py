@@ -62,14 +62,6 @@ class User(UserMixin, Base):
         else:
             return False
 
-    # # 设置密码
-    # def set_password(self, password):
-    #     self._password = generate_password_hash(password)
-    #
-    # # 验证密码
-    # def validate_password(self, password):
-    #     return check_password_hash(self._password, password)
-
 
 @login_manager.user_loader
 def get_user(uid):

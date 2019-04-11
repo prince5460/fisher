@@ -10,7 +10,7 @@ __author__ = '七月'
 
 @web.route('/my/wish')
 def my_wish():
-    pass
+    return 'wish'
 
 
 @web.route('/wish/book/<isbn>')

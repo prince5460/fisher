@@ -46,3 +46,16 @@ try:
         resource.query()
 except Exception as e:
     pass
+
+#
+# class A:
+#     def __enter__(self):
+#         a = 1
+#         return a
+#
+#     def __exit__(self):
+#         b = 2
+#
+#
+# with A() as obj_A:
+#     pass

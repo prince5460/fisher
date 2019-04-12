@@ -1,6 +1,8 @@
 '''
 Created by ZhouSp 18-11-9.
 '''
+from app.view_models.book import BookViewModel
+
 __author__ = 'zhou'
 
 
@@ -25,3 +27,6 @@ class TradeInfo:
             time=time,
             id=single.id
         )
+
+
+

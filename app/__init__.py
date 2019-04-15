@@ -6,8 +6,10 @@ from flask import Flask
 from flask_login import LoginManager
 
 from app.models.base import db
+from flask_mail import Mail
 
 login_manager = LoginManager()
+mail = Mail()
 
 
 def create_app():
@@ -19,6 +21,8 @@ def create_app():
 
     # 注册SQLAlchemy
     db.init_app(app)
+
+    mail.init_app(app)
 
     # 注册login模块
     login_manager.init_app(app)

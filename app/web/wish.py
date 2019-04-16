@@ -1,6 +1,7 @@
 from flask_login import current_user, login_required
 from flask import redirect, url_for, flash, render_template
 
+from app.libs.email import send_email
 from app.models.base import db
 from app.models.gift import Gift
 from app.models.wish import Wish
@@ -36,9 +37,22 @@ def save_to_wish(isbn):
     return redirect(url_for('web.book_detail', isbn=isbn))
 
 
+# 向其他人赠送此书
+# 1、想他人发送邮件
+# 2、他人通过邮件来接送此书
 @web.route('/satisfy/wish/<int:wid>')
+@login_required
 def satisfy_wish(wid):
-    pass
+    wish = Wish.query.get_or_404(wid)
+    gift = Gift.query.filter_by(uid=current_user.id, isbn=wish.isbn).first()
+    if not gift:
+        flash('你还没有上传此书，请点击“加入到赠送清单”添加此书。'
+              '添加前，请确保自己可以赠送此书')
+    else:
+        send_email(wish.user.email, '有人想送你一本书',
+                   'email/satisify_wish.html', gift=gift, wish=wish)
+        flash('已向他/她发送一封邮件，如果他/她愿意接受你对赠送，你将收到一个鱼漂')
+    return redirect(url_for('web.book_detail', isbn=wish.isbn))
 
 
 # 撤销心愿

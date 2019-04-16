@@ -75,7 +75,21 @@ def redraw_drift(did):
 @web.route('/drift/<int:did>/mailed')
 @login_required
 def mailed_drift(did):
-    pass
+    with db.auto_commit():
+        drift = Drift.query.filter_by(gifter_id=current_user.id, id=did).first_or_404()
+        drift.pending = PendingStatus.Success
+        current_user.beans += 1
+        gift = Gift.query.filter_by(id=drift.gift_id).first_or_404()
+        gift.launched = True
+
+        # 不同写法
+        # wish = Wish.query.filter_by(isbn=drift.isbn, uid=drift.requester_id, launched=False).first()
+        # wish.launched = True
+
+        Wish.query.filter_by(isbn=drift.isbn, uid=drift.requester_id,
+                             launched=False).update({Wish.launched: True})
+        return redirect(url_for('web.pending'))
+
 
 def save_drift(drift_form, current_gift):
     with db.auto_commit():
